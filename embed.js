@@ -1,7 +1,7 @@
 (function () {
   const DEFAULTS = {
     webhookUrl: "",
-    title: "Assistant",
+    title: "Admission Buddy",
     greet: "👋 Hi! I’m Kodee, Hostinger AI sales expert 🤖. How can I help you today?",
     position: "right",
     zIndex: 999999,

@@ -20,7 +20,7 @@
     const params = new URLSearchParams(window.location.search);
 
     const webhookUrl = params.get("webhook") || "";
-    const title = params.get("title") || "Assistant";
+    const title = params.get("title") || "Admission Buddy";
     const greet = params.get("greet") || "👋 Hi! I’m "+title+", AI expert 🤖. How can I help you today?";
     const position = params.get("position") || "right";
 
