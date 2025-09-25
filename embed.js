@@ -226,6 +226,20 @@
   function load(storageKey) { try { return JSON.parse(localStorage.getItem(storageKey) || "[]"); } catch { return []; } }
   function save(storageKey, data) { try { localStorage.setItem(storageKey, JSON.stringify(data.slice(-100))); } catch { } }
   function create(el, attrs, html) { const e = document.createElement(el); if (attrs) Object.entries(attrs).forEach(([k, v]) => e.setAttribute(k, v)); if (html != null) e.innerHTML = html; return e; }
+  function getSessionId(storageKey = "cw_session_id") {
+  const now = Date.now();
+  const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+
+  if (saved.id && saved.expiry && now < saved.expiry) {
+    return saved.id; // return existing session if not expired
+  }
+
+  // Create a new session id (simple random string)
+  const newId = 's_' + Math.random().toString(36).substr(2, 9);
+  const expiry = now + 24 * 60 * 60 * 1000; // 24 hours
+  localStorage.setItem(storageKey, JSON.stringify({ id: newId, expiry }));
+  return newId;
+}
 
   function formatMessage(text) {
     if (!text) return '';
@@ -386,8 +400,10 @@
           message: message,
           chatId: chatId,
           type: 'widget',
-          organization_id: '68bff8e6a443dd2db8aae466'
+          organization_id: '68bff8e6a443dd2db8aae466',
+          session_id: getSessionId() // <-- add session id here too
         };
+
 
         const response = await fetch(saveUrl, {
           method: 'POST',
@@ -434,7 +450,14 @@
         }
 
         // Prepare input for streaming API
-        const input = { query: text, type: 'widget', organization_id: '68bff8e6a443dd2db8aae466', organization_name: 'lums' };
+        const session_id = getSessionId(); // <-- get the session
+        const input = { 
+          query: text, 
+          type: 'widget', 
+          organization_id: '68bff8e6a443dd2db8aae466', 
+          organization_name: 'lums',
+          session_id // <-- add session id here
+        };
         // const input = { query: text, type: 'widget', organization_id: '68bfed9b64fcb4fc90386409', organization_name: 'lums' };
         
         const inputData = encodeURIComponent(JSON.stringify(input));
