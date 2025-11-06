@@ -2,7 +2,7 @@
   const DEFAULTS = {
     webhookUrl: "",
     title: "Admission Buddy",
-    greet: "👋 Hi! I’m Kodee, Hostinger AI sales expert 🤖. How can I help you today?",
+    greet: "👋 Hi! I'm Kodee, Hostinger AI sales expert 🤖. How can I help you today?",
     position: "right",
     zIndex: 999999,
     accent: "#6d28d9",
@@ -27,7 +27,9 @@
     headers: { "Content-Type": "application/json" },
     messageKey: "message",
     parse: null,
-    sendHistory: false
+    sendHistory: false,
+    orgId: "",
+    orgName: ""
   };
 
   function css(opts) {
@@ -400,7 +402,7 @@
           message: message,
           chatId: chatId,
           type: 'widget',
-          organization_id: '68bff8e6a443dd2db8aae466',
+          organization_id: opts.orgId || '68bff8e6a443dd2db8aae466',
           session_id: getSessionId() // <-- add session id here too
         };
 
@@ -454,11 +456,10 @@
         const input = { 
           query: text, 
           type: 'widget', 
-          organization_id: '68bff8e6a443dd2db8aae466', 
-          organization_name: 'lums',
+          organization_id: opts.orgId || '68bff8e6a443dd2db8aae466', 
+          organization_name: opts.orgName || 'lums',
           session_id // <-- add session id here
         };
-        // const input = { query: text, type: 'widget', organization_id: '68bfed9b64fcb4fc90386409', organization_name: 'lums' };
         
         const inputData = encodeURIComponent(JSON.stringify(input));
         const streamUrl = `${opts.webhookUrl}?input=${inputData}`;

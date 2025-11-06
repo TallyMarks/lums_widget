@@ -21,8 +21,10 @@
 
     const webhookUrl = params.get("webhook") || "";
     const title = params.get("title") || "Admission Buddy";
-    const greet = params.get("greet") || "👋 Hi! I’m "+title+", AI expert 🤖. How can I help you today?";
+    const greet = params.get("greet") || "👋 Hi! I'm "+title+", AI expert 🤖. How can I help you today?";
     const position = params.get("position") || "right";
+    const orgId = params.get("orgId") || "";
+    const orgName = params.get("orgName") || "";
 
     // Parse history flag → boolean
     const sendHistory = (params.get("history") || "true").toLowerCase() === "true";
@@ -38,7 +40,9 @@
       title,
       greet,
       position,
-      sendHistory
+      sendHistory,
+      orgId,
+      orgName
     });
     
     // Add info about streaming functionality
